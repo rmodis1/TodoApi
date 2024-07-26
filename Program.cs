@@ -1,8 +1,12 @@
 using NSwag.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
+
+var connectionString = builder.Configuration.GetConnectionString("TodoDb") ?? "Data Source=todos.db";
+builder.Services.AddSqlite<TodoDb>(connectionString);
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddEndpointsApiExplorer();
